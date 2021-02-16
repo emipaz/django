@@ -37,6 +37,7 @@ SITE_ROOT = os.path.join(BASE_DIR, 'site')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('polls/', include('polls.urls')),
+    path('users/', include('users.urls')),
     url(r'^site/(?P<path>.*)$', serve,
         {'document_root': os.path.join(BASE_DIR, 'site'),
         'show_indexes'  : True}, name='site_path'),

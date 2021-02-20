@@ -59,10 +59,6 @@ def detail(request, question_id):
 
     return render(request, 'polls/detail.html', {'question': question})
 
-def owner(request):
-
-
-
 from django.http import HttpResponse , HttpResponseRedirect
 
 from django.urls import reverse
@@ -135,4 +131,5 @@ def vote(request, question_id):
         # el usuario presiona el botón Atrás.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
-
+def owner(request):
+        return HttpResponse("Hello, world. 7c738d98 is the polls owner.")

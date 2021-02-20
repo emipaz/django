@@ -1,15 +1,28 @@
+
+"""
 from django.shortcuts import get_object_or_404, render
 # Create your views here.
-from django.http import HttpResponse , HttpResponseRedirect
 
 from .models import Question , Choice
 
-# from django.template import loader
+primera vistas del proyecto
 
-from django.urls import reverse
+from django.http import HttpResponse
+
+def vote(request, question_id):
+    return HttpResponse("You're voting on question %s." % question_id)
+
+def results(request, question_id):
+    response = "You're looking at the results of question %s."
+    return HttpResponse(response % question_id)
+
+cambio a vistas mas complejas
+
+from django.template import loader
 
 from django.http import Http404
 
+from django.shortcuts import get_object_or_404, render
 
 def index(request):
     ################ primrera vista version con Httresponse #################
@@ -19,8 +32,8 @@ def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
 
     # output = ', '.join([q.question_text for q in latest_question_list])
-        # concatena los resultados de la consulta en un  string
-    # return HttpResponse(output) esta linea era la segunda version donde enviaba el output
+        # concatena los  de la consulta en un  string
+    # return HttpResponresultadosse(output) esta linea era la segunda version donde enviaba el output
 
     contexto  = {'latest_question_list': latest_question_list,} # creamos un diccionario
     # ############# Version utilizando loader ###############################
@@ -46,29 +59,20 @@ def detail(request, question_id):
 
     return render(request, 'polls/detail.html', {'question': question})
 
-
-
 def owner(request):
-       return HttpResponse("Hello, world. 7c738d98 is the polls index.")
 
 
 
-"""
-def vote(request, question_id):
-    return HttpResponse("You're voting on question %s." % question_id)
+from django.http import HttpResponse , HttpResponseRedirect
 
-def results(request, question_id):
-    response = "You're looking at the results of question %s."
-    return HttpResponse(response % question_id)
-
-"""
+from django.urls import reverse
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form.
+        # Vuelva a mostrar el formulario de votación de preguntas.
         return render(request, 'polls/detail.html',
                                {'question'      : question,
                                 'error_message' : "You didn't select a choice.",})
@@ -83,3 +87,52 @@ def vote(request, question_id):
 def results(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/results.html', {'question': question})
+
+"""
+################# Modo Vistas Genéricas ####################
+
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.views import generic
+
+from .models import Choice, Question
+
+
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+
+    def get_queryset(self):
+        """Devolver las últimas cinco preguntas publicadas."""
+        return Question.objects.order_by('-pub_date')[:5]
+
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
+
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
+
+
+def vote(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        # Vuelva a mostrar el formulario de votación de preguntas.
+        return render(request, 'polls/detail.html',
+                               {'question'      : question,
+                                'error_message' : "You didn't select a choice.",})
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        # Siempre devuelva un HttpResponseRedirect después de negociar con éxito
+        # con datos POST. Esto evita que los datos se publiquen dos veces si un
+        # el usuario presiona el botón Atrás.
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+

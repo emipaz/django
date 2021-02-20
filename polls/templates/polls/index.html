@@ -1,12 +1,21 @@
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}
-        <!-- <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li> -->
-        <!-- la linea posterior permite modificar la url desde polls/urls.py en vez de estar
-        modoficando cada template -->
-        <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+        {% comment %}
+        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+         la linea posterior permite modificar la url desde polls/urls.py en vez de estar
+        modoficando cada template
+        ##
+         <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+
+        ahora modificamos la url para que django sepa a que app debe redireccionar
+        {% endcomment %}
+        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+
     {% endfor %}
     </ul>
 {% else %}
     <p>No hay encuestas disponibles.</p>
 {% endif %}
+
+

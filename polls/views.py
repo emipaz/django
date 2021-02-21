@@ -7,7 +7,7 @@ from .models import Question , Choice
 
 primera vistas del proyecto
 
-from django.http import HttpResponse
+
 
 def vote(request, question_id):
     return HttpResponse("You're voting on question %s." % question_id)
@@ -91,7 +91,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
-
+from django.http import HttpResponse
 from .models import Choice, Question
 
 
@@ -132,4 +132,4 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
 def owner(request):
-        return HttpResponse("Hello, world. 7c738d98 is the polls owner.")
+        return HttpResponse("Hello, world. f4adf97f is the polls owner.")

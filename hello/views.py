@@ -13,7 +13,7 @@ def index(request) :
     resp = HttpResponse('view count='+str(num_visits))
     oldval = request.COOKIES.get('dj4e_cookie', None)
     if oldval !=  'f4adf97f':
-        resp.set_cookie('dj4e_cookie', 'f4adf97f', max_age=1000)
+        resp.set_cookie('dj4e_cookie', '88ba8576', max_age=1000)
     return resp
 
 

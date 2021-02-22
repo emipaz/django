@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     "home.apps.HomeConfig",
     "hello.apps.HelloConfig",
+    "authz.apps.AuthzConfig",
+    "autos.apps.AutosConfig",
 ]
 
 MIDDLEWARE = [
@@ -111,21 +113,21 @@ LANGUAGE_CODE = 'en-es'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
+USE_I18N  = True
 
-USE_L10N = True
+USE_L10N  = True
 
-USE_TZ = True
+USE_TZ    = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL  = '/static/'
 
 # default static files settings for PythonAnywhere.
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
-MEDIA_ROOT = '/home/emipaz1975/emi_web/media'
-MEDIA_URL = '/media/'
+MEDIA_ROOT  = '/home/emipaz1975/emi_web/media'
+MEDIA_URL   = '/media/'
 STATIC_ROOT = '/home/emipaz1975/emi_web/static'
-STATIC_URL = '/static/'
+STATIC_URL  = '/static/'

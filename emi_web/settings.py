@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "hello.apps.HelloConfig",
     "authz.apps.AuthzConfig",
     "autos.apps.AutosConfig",
+    "cats.apps.CatsConfig",
 ]
 
 MIDDLEWARE = [

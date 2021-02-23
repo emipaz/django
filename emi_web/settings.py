@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['emipaz1975.pythonanywhere.com']
 
 # Application definition
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,6 +46,8 @@ INSTALLED_APPS = [
     "autos.apps.AutosConfig",
     "cats.apps.CatsConfig",
 ]
+
+# APP_NAME = 'ChucksList'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -87,6 +90,20 @@ DATABASES = {
     }
 }
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'emipaz1975$emibase',
+#        'USER': 'emipaz1975',
+#        'PASSWORD': 'emisql3645',
+#        'HOST': 'emipaz1975.mysql.pythonanywhere-services.com',
+#         'OPTIONS': {
+#            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#        },
+#    }
+#}
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -124,7 +141,6 @@ USE_TZ    = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL  = '/static/'
 
 # default static files settings for PythonAnywhere.
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info

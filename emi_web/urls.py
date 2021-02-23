@@ -50,4 +50,12 @@ urlpatterns = [
     path("cats/", include("cats.urls")),
 ]
 
+urlpatterns += [
+    path('favicon.ico', serve, {
+            'path': 'favicon.ico',
+            'document_root': os.path.join(BASE_DIR, 'home/static'),
+        }
+    ),
+]
+
 

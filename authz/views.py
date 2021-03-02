@@ -1,4 +1,4 @@
-from django.shortcuts import render
+
 
 # Create your views here.
 from django.shortcuts import render, redirect
@@ -6,6 +6,11 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.utils.http import urlencode
+
+
+
+
+
 
 class OpenView(View) :
     def get(self, request):
@@ -43,3 +48,25 @@ class DumpPython(View) :
         resp += "</pre>\n"
         resp += """<a href="/authz">Go back</a>"""
         return HttpResponse(resp)
+
+############ para nuevo usuario
+from django.contrib.auth.forms import UserCreationForm
+#from django.contrib.auth.forms import AuthenticationForm
+#from django.contrib.auth import login, authenticate, logout
+#from django.contrib.auth.decorators import login_required
+####################
+
+from django.http import HttpResponseRedirect
+from django.template import RequestContext
+
+def nuevo_usuario(request):
+    if request.method == "POST":
+        formulario = UserCreationForm(request.POST)
+        if formulario.is_valid:
+            formulario.save()
+            return HttpResponseRedirect("/")
+    else:
+        formulario = UserCreationForm()
+    return render(request,template_name="authz/nuevo_usuario.html",context={"formulario":formulario})
+
+

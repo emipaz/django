@@ -1,0 +1,13 @@
+{% extends "base_bootstrap.html" %}
+{% block titulo %}Nuevo Usuario{% endblock %}
+{% block head %}
+<h1>Registra un nuevo usuario</h1>
+{% endblock %}
+{% block content %}
+<form id="formulario", method="POST" action="submit">
+    {% csrf_token %}
+    <table>{{formulario}}</table>
+    <p><input="submit" value="Registrar"/>
+    <input type="submit" value="Registrar" onclick="window.location.href='/';return false;"></p>
+</form>
+{% endblock %}

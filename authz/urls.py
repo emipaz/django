@@ -10,4 +10,5 @@ urlpatterns = [
     path('manual',  views.ManualProtect.as_view(), name = 'manual'),
     path('protect', views.ProtectView.as_view(),   name = 'protect'),
     path('python',  views.DumpPython.as_view(),    name = 'python'),
+    path("nuevo",   views.nuevo_usuario   ,      name = "nuevo"),
 ]

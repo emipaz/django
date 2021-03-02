@@ -107,6 +107,6 @@ class CommentCreateView(LoginRequiredMixin, View):
 
 class CommentDeleteView(OwnerDeleteView):
     model = Comment
-    template_name = "comment_delete.html"
+    template_name = "ads/comment_delete.html"
 
 

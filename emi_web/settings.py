@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'taggit',
     'rest_framework',
     'social_django',
-
+   #'registration',
 
     'polls.apps.PollsConfig',
     'users.apps.UsersConfig',
@@ -62,6 +62,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 TAGGIT_CASE_INSENSITIVE = True
 
+ACCOUNT_ACTIVATION_DAYS = 7
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -70,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'emi_web.urls'
@@ -175,7 +178,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     )
 }
-"""
+
 # Configure the social login
 try:
     from . import github_settings
@@ -224,4 +227,4 @@ if (len(sys.argv) >= 2 and sys.argv[1] == 'runserver'):
         }
     }
 '''
-"""
+

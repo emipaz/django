@@ -10,7 +10,7 @@ from django.http import HttpResponse
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from ads.models import Ad, Comment
+from ads.models import Ad, Comment , Fav
 
 from ads.owner import OwnerListView, OwnerDetailView , OwnerDeleteView #  OwnerCreateView,
 
@@ -21,6 +21,18 @@ class AdListView(OwnerListView):
     model = Ad
     # By convention:
     template_name = "ads/ad_list.html"
+
+    def get(self, request) :
+        ad_list = Ad.objects.all()
+        favorites = list()
+        if request.user.is_authenticated:
+            # filas = [{'id': 2}, {'id': 4} ... ]  (una lista de filas)
+            rows = request.user.favorite_ads.values('id')
+
+            favorites = [ row['id'] for row in rows ]
+        ctx = {'ad_list' : ad_list, 'favorites': favorites}
+        return render(request, self.template_name, ctx)
+
 
 class AdDetailView(OwnerDetailView):
     model = Ad
@@ -108,5 +120,36 @@ class CommentCreateView(LoginRequiredMixin, View):
 class CommentDeleteView(OwnerDeleteView):
     model = Comment
     template_name = "ads/comment_delete.html"
+
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.db.utils import IntegrityError
+
+@method_decorator(csrf_exempt, name='dispatch')
+class AddFavoriteView(LoginRequiredMixin, View):
+    def post(self, request, pk) :
+        print("Add PK",pk)
+        t = get_object_or_404(Ad, id=pk)
+        fav = Fav(user=request.user, ad=t)
+        try:
+            fav.save()  # In case of duplicate key
+        except IntegrityError as e:
+            print(e)
+            pass
+        return HttpResponse()
+
+@method_decorator(csrf_exempt, name='dispatch')
+class DeleteFavoriteView(LoginRequiredMixin, View):
+    def post(self, request, pk) :
+        print("Delete PK",pk)
+        t = get_object_or_404(Ad, id=pk)
+        try:
+            Fav.objects.get(user=request.user, ad=t).delete()
+        except Ad.DoesNotExist as e:
+            print(e)
+            pass
+
+        return HttpResponse()
+
 
 

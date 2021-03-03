@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "autos.apps.AutosConfig",
     "cats.apps.CatsConfig",
     "ads.apps.AdsConfig",
+    "chat.apps.ChatConfig",
 ]
 
 APP_NAME = 'Emi_web'

@@ -50,6 +50,7 @@ urlpatterns = [
     path('authz/', include('authz.urls')),
     path("cats/", include("cats.urls")),
     path("ads/",include("ads.urls")),
+    path("chat/",include("chat.urls")),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
 
 ]

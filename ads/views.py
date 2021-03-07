@@ -16,23 +16,45 @@ from ads.owner import OwnerListView, OwnerDetailView , OwnerDeleteView #  OwnerC
 
 from ads.forms import CreateForm
 from ads.forms import CommentForm
+from django.contrib.humanize.templatetags.humanize import naturaltime
+
+from ads.utils import dump_queries
+from django.db.models import Q
 
 class AdListView(OwnerListView):
     model = Ad
     # By convention:
     template_name = "ads/ad_list.html"
-
     def get(self, request) :
-        ad_list = Ad.objects.all()
+        # ad_list = Ad.objects.all()
+        strval =  request.GET.get("search", False)
+        if strval :
+            # Simple title-only search
+            # objects = Post.objects.filter(title__contains=strval).select_related().order_by('-updated_at')[:10]
+            # Multi-field search
+            query = Q(title__contains=strval)
+            query.add(Q(text__contains=strval), Q.OR)
+            objects = Ad.objects.filter(query).select_related().order_by('-updated_at')[:10]
+        else :
+            # try both versions with > 4 posts and watch the queries that happen
+            objects = Ad.objects.all().order_by('-updated_at')[:10]
+            # objects = Post.objects.select_related().all().order_by('-updated_at')[:10]
+            # Augment the post_list
+        for obj in objects:
+            obj.natural_updated = naturaltime(obj.updated_at)
+
         favorites = list()
         if request.user.is_authenticated:
             # filas = [{'id': 2}, {'id': 4} ... ]  (una lista de filas)
             rows = request.user.favorite_ads.values('id')
-
             favorites = [ row['id'] for row in rows ]
-        ctx = {'ad_list' : ad_list, 'favorites': favorites}
-        return render(request, self.template_name, ctx)
+            # ctx = {'ad_list' : obj, 'favorites': favorites}
 
+        ctx = {'ad_list' : objects, 'search': strval, 'favorites': favorites}
+        retval = render(request, self.template_name, ctx)
+        dump_queries()
+        # return render(request, self.template_name, ctx)
+        return retval
 
 class AdDetailView(OwnerDetailView):
     model = Ad
